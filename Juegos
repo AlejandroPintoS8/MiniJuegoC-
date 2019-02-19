@@ -1,0 +1,647 @@
+#include <iostream>
+#include <time.h>
+#include <stdlib.h>
+
+//Prototipos
+void AdivinarNum(void);
+void TresEnFila(void);
+void MostrarTableroActual(char Tablero[][3]);
+void TableroActualC(char Tablero[][8]);
+void ImprimirGanador(bool &, bool);
+void CuatroEnFila();
+void HangedMan();
+void DibujarHangedMan(int, bool &);
+std::string ExtraerPalabra();
+int validarRespuesta(char, std::string, std::string &, int);
+bool Victoria(std::string, std::string, int);
+
+
+int main(void) {
+	int op;
+	do {
+		std::cout << "MiniJuegos: " << std::endl;
+		std::cout << "1.Adivinar un numero a la azar\n2.Tres en fila\n3.Conecta 4\n" << std::endl;
+		std::cin >> op;
+		system("cls");
+
+		switch (op) {
+		case 1: 
+		{
+			AdivinarNum();
+			break;
+		}
+		case 2: {
+		TresEnFila();
+		std::cout << "\n\n";
+		system("pause");
+		system("cls");
+		break;
+		}
+		case 3:
+		{
+			CuatroEnFila();
+			system("pause");
+			system("cls");
+			break;
+		}
+		case 4:
+		{
+			HangedMan();
+		}
+		}
+
+	} while (op != 4);
+
+	system("pause");
+	return 0;
+}
+
+void AdivinarNum() {
+	srand(time(NULL));
+	int num = rand() % 11;
+	bool ganador = 0;
+	//std::cout << num << std::endl;
+	int res;
+	for (int i = 3; i >= 1; i--) {
+		std::cout << "Tienes " << i << " oportunidades para adivinar el numero aleatorio entre el 1 y el 10" << std::endl;
+		std::cout << "Digita tu respuesta: " << std::endl;
+
+		std::cin >> res;
+
+		if (res != num) {
+			std::cout << "Respuesta equivocada!" << std::endl;
+			system("pause");
+		}
+		else {
+			std::cout << "Respuesta correcta!" << std::endl;
+			ganador = 1;
+			break;
+		}
+		system("cls");
+	}
+
+	if (ganador == 1)
+		std::cout << "Has ganado!" << std::endl;
+	else {
+		std::cout << "Has perdido!:c" << std::endl;
+		std::cout << "La respuesta correcta era " << num << std::endl;
+		}
+
+	system("pause");
+	system("cls");
+}
+
+void TresEnFila(void) {
+	char Tablero[3][3];
+	bool turno = 0, terminar = 0;
+	char dib = '1';
+	int seleccion = 1;
+	// Llenar con el numero inicial de la casilla 
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++)
+			Tablero[i][j] = dib++;
+	}
+	// Monstrando el tablero en consola
+	MostrarTableroActual(Tablero);
+
+	while (true) {
+		int i, j, CasillaOcupada;
+
+		do {
+			CasillaOcupada = 0;
+			do {
+				std::cout << "\n";
+				std::cout << "Ingrese el numero de la casilla donde quiere colocar su ficha: " << std::endl;
+				std::cin >> seleccion;
+			} while (seleccion < 1 || seleccion > 9);
+			switch (seleccion) {
+			case 1: {
+				i = 0;
+				j = 0;
+				if (Tablero[i][j] == 'X' || Tablero[i][j] == 'O') {
+					CasillaOcupada = 1;
+					std::cout << "Esta casilla ya esta siendo ocupada " << std::endl;
+				}
+				break;
+			}
+			case 2: {
+				i = 0;
+				j = 1;
+				if (Tablero[i][j] == 'X' || Tablero[i][j] == 'O') {
+					CasillaOcupada = 1;
+					std::cout << "Esta casilla ya esta siendo ocupada " << std::endl;
+				}
+				break;
+			}
+			case 3: {
+				i = 0;
+				j = 2;
+				if (Tablero[i][j] == 'X' || Tablero[i][j] == 'O') {
+					CasillaOcupada = 1;
+					std::cout << "Esta casilla ya esta siendo ocupada " << std::endl;
+				}
+				break;
+			}
+			case 4: {
+				i = 1;
+				j = 0;
+				if (Tablero[i][j] == 'X' || Tablero[i][j] == 'O') {
+					CasillaOcupada = 1;
+					std::cout << "Esta casilla ya esta siendo ocupada " << std::endl;
+				}
+				break;
+			}
+			case 5: {
+				i = 1;
+				j = 1;
+				if (Tablero[i][j] == 'X' || Tablero[i][j] == 'O') {
+					CasillaOcupada = 1;
+					std::cout << "Esta casilla ya esta siendo ocupada " << std::endl;
+				}
+				break;
+			}
+			case 6: {
+				i = 1;
+				j = 2;
+				if (Tablero[i][j] == 'X' || Tablero[i][j] == 'O') {
+					CasillaOcupada = 1;
+					std::cout << "Esta casilla ya esta siendo ocupada " << std::endl;
+				}
+				break;
+			}
+			case 7: {
+				i = 2;
+				j = 0;
+				if (Tablero[i][j] == 'X' || Tablero[i][j] == 'O') {
+					CasillaOcupada = 1;
+					std::cout << "Esta casilla ya esta siendo ocupada " << std::endl;
+				}
+				break;
+			}
+			case 8: {
+				i = 2;
+				j = 1;
+				if (Tablero[i][j] == 'X' || Tablero[i][j] == 'O') {
+					CasillaOcupada = 1;
+					std::cout << "Esta casilla ya esta siendo ocupada " << std::endl;
+				}
+				break;
+			}
+			case 9: {
+				i = 2;
+				j = 2;
+				if (Tablero[i][j] == 'X' || Tablero[i][j] == 'O') {
+					CasillaOcupada = 1;
+					std::cout << "Esta casilla ya esta siendo ocupada " << std::endl;
+				}
+				break;
+				}
+			}
+		} while (CasillaOcupada == 1);
+		// Dibujando la ficha de acuerdo al turno
+		if (turno == 0)
+			Tablero[i][j] = 'X';
+		else
+			Tablero[i][j] = 'O';
+		//Cambio de turno
+		turno = !turno;
+
+		system("cls");
+		//Validacion Horizontal
+		j = 0;
+		i = 0;
+		for (i = 0; i <= 2; i++) {
+			if ((Tablero[i][j] == 'X' && Tablero[i][j + 1] == 'X' && Tablero[i][j + 2] == 'X') ||
+				(Tablero[i][j] == 'O' && Tablero[i][j + 1] == 'O' && Tablero[i][j + 2] == 'O'))
+				ImprimirGanador(terminar, turno);
+		}
+		if (terminar == 1)
+			break;
+
+		// Validacion Vertical
+		j = 0;
+		i = 0;
+		for (j = 0; j <= 2; j++) {
+			if ((Tablero[i][j] == 'X' && Tablero[i + 1][j] == 'X' && Tablero[i + 2][j] == 'X') ||
+				(Tablero[i][j] == 'O' && Tablero[i + 1][j] == 'O' && Tablero[i + 2][j] == 'O')) 
+				ImprimirGanador(terminar, turno);
+		}
+		if (terminar == 1)
+			break;
+
+
+			// Validacion Diagonal 
+			j = 0;
+			i = 0;
+			for (i = 0; i <= 2; i++) {
+				if ((Tablero[i][j] == 'X' && Tablero[i + 1][j + 1] == 'X' && Tablero[i + 2][j + 2] == 'X') ||
+					(Tablero[i][j] == 'O' && Tablero[i + 1][j + 1] == 'O' && Tablero[i + 2][j + 2] == 'O'))
+					ImprimirGanador(terminar, turno);
+			}
+		
+			if (terminar == 1)
+				break;
+
+			// Validacion Diagonal inversa
+			j = 0;
+			i = 0;
+			for (i = 0; i <= 2; i++) {
+				if ((Tablero[i + 2][j] == 'X' && Tablero[i + 1][j + 1] == 'X' && Tablero[i][j + 2] == 'X') ||
+					(Tablero[i + 2][j] == 'O' && Tablero[i + 1][j + 1] == 'O' && Tablero[i][j + 2] == 'O')) {
+					ImprimirGanador(terminar, turno);
+				}
+			}
+			if (terminar == 1)
+				break;
+
+			MostrarTableroActual(Tablero);
+			if (terminar == 1)
+				break;
+			
+			//Validar Empate 
+			i = 0;
+			j = 0;
+			int contador = 0;
+			for (i = 0; i <= 2; i++) {
+				for (j = 0; j <= 2; j++) {
+					if (Tablero[i][j] == 'X' || Tablero[i][j] == 'O')
+						contador++;
+				}
+			}
+
+			if (contador == 9) {
+				std::cout << "Ningun jugador ha ganado!!" << std::endl;
+				terminar = 1;
+			}
+
+			if (terminar == 1)
+				break;
+	}
+	MostrarTableroActual(Tablero);
+}
+
+void MostrarTableroActual(char Tablero[][3]) {
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			if (j < 2)
+				std::cout << " " << Tablero[i][j] << " |";
+			else
+				std::cout << " " << Tablero[i][j];
+		}
+		if (i < 2)
+			std::cout << "\n----------\n";
+	}
+}
+
+void ImprimirGanador(bool &terminar, bool turno) {
+	if (turno == 0) {
+		std::cout << "Ha ganado el jugador con las fichas O" << std::endl;
+		terminar = 1;
+	}
+	else
+		std::cout << "Ha ganado el jugador con las fichas X" << std::endl;
+		terminar = 1;
+}
+
+void CuatroEnFila() {
+	char TableroC[8][8];
+	bool turno = 0, terminar = 0;
+	int col = 9;
+
+	for (int i = 0; i <= 7; i++) {
+		for (int j = 0; j <= 7; j++) {
+			TableroC[i][j] = '.';
+		}
+	}
+
+	TableroActualC(TableroC);
+
+	while (true) {
+		int i, j, ColumnaLlena;
+		
+		for (int c = 0; c <= 7; c++)
+			std::cout << TableroC[c][0] << std::endl;
+
+		do {
+			ColumnaLlena = 0;
+			do {
+				std::cout << "Ingrese el numero de la columna en la que quiere ingresar su ficha: " << std::endl;
+				std::cin >> col;
+			} while (col < 1 || col > 8);
+
+			switch (col) {
+			case 1: {
+				i = 7, j = 0;
+				if (TableroC[0][0] == 'X' || TableroC[0][0] == 'O') {
+					std::cout << "Esta columna ya esta llena" << std::endl;
+					ColumnaLlena = 1;
+				}
+				break;
+			}
+			case 2:
+			{
+				i = 7, j = 1;
+				if (TableroC[0][1] == 'X' || TableroC[0][1] == 'O') {
+					std::cout << "Esta columna ya esta llena" << std::endl;
+					ColumnaLlena = 1;
+				}
+				break;
+			}
+			case 3: {
+				i = 7, j = 2;
+				if (TableroC[0][2] == 'X' || TableroC[0][2] == 'O') {
+					std::cout << "Esta columna ya esta llena" << std::endl;
+					ColumnaLlena = 1;
+				}
+				break;
+			}
+			case 4: {
+				i = 7, j = 3;
+				if (TableroC[0][3] == 'X' || TableroC[0][3] == 'O') {
+					std::cout << "Esta columna ya esta llena" << std::endl;
+					ColumnaLlena = 1;
+				}
+				break;
+			}
+			case 5:
+			{
+				i = 7, j = 4;
+				if (TableroC[0][4] == 'X' || TableroC[0][4] == 'O') {
+					std::cout << "Esta columna ya esta llena" << std::endl;
+					ColumnaLlena = 1;
+				}
+				break;
+			}
+			case 6:
+			{
+				i = 7, j = 5;
+				if (TableroC[0][5] == 'X' || TableroC[0][5] == 'O') {
+					std::cout << "Esta columna ya esta llena" << std::endl;
+					ColumnaLlena = 1;
+				}
+				break;
+			}
+			case 7:
+			{
+				i = 7, j = 6;
+				if (TableroC[0][6] == 'X' || TableroC[0][6] == 'O') {
+					std::cout << "Esta columna ya esta llena" << std::endl;
+					ColumnaLlena = 1;
+				}
+				break;
+			}
+			case 8: {
+				i = 7, j = 7;
+				if (TableroC[0][7] == 'X' || TableroC[0][7] == 'O') {
+					std::cout << "Esta columna ya esta llena" << std::endl;
+					ColumnaLlena = 1;
+				}
+				break;
+			}
+			}
+		} while (ColumnaLlena == 1);
+
+		while (i >= 0) {
+			if (TableroC[i][j] == '.') {
+				if (turno == 0) {
+					TableroC[i][j] = 'X';
+					turno = !turno;
+					break;
+				}
+				else {
+					TableroC[i][j] = 'O';
+					turno = !turno;
+					break;
+				}
+			}
+			else
+				i--;
+		}
+		system("cls");
+		// Validacion Vertical
+		//std::cout << "Posicion actual: i: " << i << " j: " << j << std::endl;
+		//std::cout << TableroC[i][j] << " " << TableroC[i+1][j] << " " << TableroC[i+2][j] << " " << TableroC[i +3][j] << " " << std::endl;
+		if (((TableroC[i][j] == 'X' && TableroC[i + 1][j] == 'X') && (TableroC[i + 2][j] == 'X' && TableroC[i+3][j] == 'X')) ||
+			((TableroC[i][j] == 'O' && TableroC[i + 1][j] == 'O') && (TableroC[i + 2][j] == 'O' && TableroC[i+3][j] == 'O')))
+			ImprimirGanador(terminar, turno);
+
+		// Validacion Horizontal 
+		//std::cout << "Posicion actual: i: " << i << " j: " << j << std::endl;
+		//std::cout << TableroC[i][j] << " " << TableroC[i][j+1] << " " << TableroC[i][j+2] << " " << TableroC[i][j+3] << " " << std::endl;
+		if (((TableroC[i][j] == 'X' && TableroC[i][j+1] == 'X') && (TableroC[i][j+2] == 'X' && TableroC[i][j+3] == 'X')) ||
+			((TableroC[i][j] == 'O' && TableroC[i][j+1] == 'O') && (TableroC[i][j+2] == 'O' && TableroC[i][j+3] == 'O')))
+			ImprimirGanador(terminar, turno);
+		// Horizontal inversa
+		if (((TableroC[i][j] == 'X' && TableroC[i][j - 1] == 'X') && (TableroC[i][j - 2] == 'X' && TableroC[i][j - 3] == 'X')) ||
+			((TableroC[i][j] == 'O' && TableroC[i][j - 1] == 'O') && (TableroC[i][j - 2] == 'O' && TableroC[i][j - 3] == 'O')))
+			ImprimirGanador(terminar, turno);
+
+		// Validacion Diagonal
+		if (((TableroC[i][j] == 'X' && TableroC[i + 1][j + 1] == 'X') && (TableroC[i + 2][j + 2] == 'X' && TableroC[i + 3][j + 3] == 'X')) ||
+			((TableroC[i][j] == 'O' && TableroC[i + 1][j + 1] == 'O') && (TableroC[i + 2][j + 2] == 'O' && TableroC[i + 3][j + 3] == 'O')))
+			ImprimirGanador(terminar, turno);
+
+		//Validacion Diagonal Reversa
+		if (((TableroC[i][j] == 'X' && TableroC[i - 1][j - 1] == 'X') && (TableroC[i - 2][j - 2] == 'X' && TableroC[i - 3][j - 3] == 'X')) ||
+			((TableroC[i][j] == 'O' && TableroC[i - 1][j - 1] == 'O') && (TableroC[i - 2][j - 2] == 'O' && TableroC[i - 3][j - 3] == 'O')))
+			ImprimirGanador(terminar, turno);
+
+		//Validacion Diagonal Inversa
+		if (((TableroC[i][j] == 'X' && TableroC[i - 1][j + 1] == 'X') && (TableroC[i - 2][j + 2] == 'X' && TableroC[i - 3][j + 3] == 'X')) ||
+			((TableroC[i][j] == 'O' && TableroC[i - 1][j + 1] == 'O') && (TableroC[i - 2][j + 2] == 'O' && TableroC[i - 3][j + 3] == 'O')))
+			ImprimirGanador(terminar, turno);
+
+		//Validacion Diagonal Inversa Reversa
+		if (((TableroC[i][j] == 'X' && TableroC[i + 1][j - 1] == 'X') && (TableroC[i + 2][j - 2] == 'X' && TableroC[i + 3][j - 3] == 'X')) ||
+			((TableroC[i][j] == 'O' && TableroC[i + 1][j - 1] == 'O') && (TableroC[i + 2][j - 2] == 'O' && TableroC[i + 3][j - 3] == 'O')))
+			ImprimirGanador(terminar, turno);
+
+		TableroActualC(TableroC);
+
+		if (terminar == 1)
+			break;
+
+		//Validar empate 
+		int empate = 0;
+		for (int a = 0; a <= 7; a++) {
+			for (int b = 0; b <= 7; b++)
+				if (TableroC[a][b] == 'X' || TableroC[a][b] == 'O')
+					empate++;
+		}
+
+		if (empate == 64) {
+			std::cout << "Hay empate, no hay ningun ganador!" << std::endl;
+			break;
+		}
+	}
+}
+
+void TableroActualC(char TableroC[][8]) {
+	for (int i = 0; i <= 7; i++)
+		std::cout << "  " << i +1 << "  ";
+	std::cout << "\n";
+
+	for (int i = 0; i <= 7; i++) {
+		for (int j = 0; j <= 7; j++) {
+			std::cout << "  " << TableroC[i][j] << "  ";
+			}
+		if (i >= 0 && i <= 7)
+			std::cout << "\n_______________________________________\n";
+		}
+		
+	}
+
+void HangedMan() {
+	int ContadorDeError = 0;
+	bool terminar = 0;
+	char letra;
+	std::string palabra = ExtraerPalabra();
+	std::string adivinar = "";
+	int i = 0;
+	const int largo = palabra.length();
+
+	while (true) {
+		DibujarHangedMan(ContadorDeError, terminar);
+
+		//std::cout << largo << std::endl;
+
+		while (i <= largo -1) {
+			std::cout << palabra[i];
+			adivinar += '_';
+			i++;
+		}
+		i = 0;
+		while (i <= largo - 1) {
+			std::cout << adivinar[i] << " ";
+			i++;
+		}
+
+		std::cout << "\n";
+
+		std::cout << "Introduzca una letra: " << std::endl;
+		std::cin >> letra;
+		std::cout << "\n\n";
+
+		if (validarRespuesta(letra, palabra, adivinar, largo) == largo)
+			ContadorDeError++;
+
+		if (terminar == 1)
+			break;
+		
+	}
+}
+
+std::string ExtraerPalabra() {
+	srand(time(NULL));
+	int num = rand() % 11;
+
+	switch (num) {
+	case 0: return "apex";
+	case 1: return "carro";
+	case 2: return "informatica";
+	case 3: return "cortesito";
+	case 4: return "cheverisimo";
+	case 5: return "programacion";
+	case 6: return "perro";
+	case 7: return "fortnite";
+	case 8: return "ajedrez";
+	case 9: return "futbol";
+	case 10: return "television";
+	}
+}
+
+void DibujarHangedMan(int ContadorDeError, bool &terminar) {
+	switch (ContadorDeError) {
+	case 0:
+		break;
+	case 1:
+	{
+		std::cout << "O" << std::endl;
+		break;
+	}
+	case 2:
+	{
+		std::cout << "  O  " << std::endl;
+		std::cout << "  |  " << std::endl;
+		break;
+	}
+	case 3: {
+		std::cout << "  O  " << std::endl;
+		std::cout << "--|  " << std::endl;
+		break;
+	}
+	case 4:
+	{
+		std::cout << "  O  " << std::endl;
+		std::cout << "--|--" << std::endl;
+		break;
+	}
+	case 5: {
+		std::cout << "  O  " << std::endl;
+		std::cout << "--|--" << std::endl;
+		std::cout << " (   " << std::endl;
+		break;
+	}
+	case 6: {
+		std::cout << "  O  " << std::endl;
+		std::cout << "--|--" << std::endl;
+		std::cout << " ( ) " << std::endl;
+		break;
+	}
+	case 7: {
+		std::cout << "  O  " << std::endl;
+		std::cout << "--|--" << std::endl;
+		std::cout << " ( ) " << std::endl;
+		std::cout << "|___|" << std::endl;
+		break;
+	}
+	case 8: {
+		std::cout << "  O  " << std::endl;
+		std::cout << "--|--" << std::endl;
+		std::cout << " ( ) " << std::endl;
+		std::cout << "|___|" << std::endl;
+		std::cout << " *   " << std::endl;
+		break;
+	}
+	case 9: {
+		std::cout << "  O  " << std::endl;
+		std::cout << "--|--" << std::endl;
+		std::cout << " ( ) " << std::endl;
+		std::cout << "|___|" << std::endl;
+		std::cout << " ** " << std::endl;
+		break;
+	}
+	case 10: {
+		std::cout << "  O  " << std::endl;
+		std::cout << "--|--" << std::endl;
+		std::cout << " ( ) " << std::endl;
+		std::cout << "|___|" << std::endl;
+		std::cout << " *** " << std::endl;
+		break;
+	}
+	case 11:
+	{
+		std::cout << "Has perdido!!" << std::endl;
+		terminar == 1;
+		break;
+	}
+	}
+}
+
+int validarRespuesta(char letra, std::string palabra, std::string &adivinar, int largo) {
+	int i = 0;
+	int error = 0;
+		while (i <= largo - 1) {
+			if (letra == palabra[i]) {
+				//std::cout << "La letra es igual" << std::endl;
+				adivinar[i] = letra;
+				//std::cout << adivinar[i] << std::endl;
+				i++;
+			}
+			else {
+				error++;
+				i++;
+			}
+	}
+		return error;
+}
